@@ -1,8 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Copy Text</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 40px;
+    }
+    button {
+        padding: 10px 16px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    p {
+        margin-top: 15px;
+        color: green;
+    }
+</style>
+</head>
 <body>
+
+<button onclick="copyFromFile()">Copy Text</button>
+<p id="status"></p>
+
 <script>
-window.location.href = "script.js";
+async function copyFromFile() {
+    const status = document.getElementById('status');
+    status.textContent = 'Copying...';
+
+    try {
+        const response = await fetch('a.txt');
+        const text = await response.text();
+
+        await navigator.clipboard.writeText(text);
+        status.textContent = 'Text copied to clipboard ✔';
+    } catch (err) {
+        status.textContent = 'Failed to copy text ✖';
+        status.style.color = 'red';
+    }
+}
 </script>
+
 </body>
 </html>
