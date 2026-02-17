@@ -1,6 +1,6 @@
 {
   "Quick DOM Selectors": {
-    "prefix": "selectors",
+    "prefix": "selectors-",
     "body": [
       "const $ = (selector) => document.querySelector(selector);",
       "const $$ = (selector) => document.querySelectorAll(selector);",
@@ -10,7 +10,7 @@
   },
 
   "Client Side Authentication": {
-    "prefix": "authentication",
+    "prefix": "authentication-",
     "body": [
       "const users = [",
       "  { id: 1, username: \"john\", password: \"1234\", role: \"student\", isLocked: false, failedAttempts: 0 },",
@@ -42,7 +42,7 @@
   },
 
   "Student Performance Analyzer": {
-    "prefix": "studentanalyzer",
+    "prefix": "studentanalyzer-",
     "body": [
       "const students = [];",
       "",
@@ -65,35 +65,9 @@
     ],
     "description": "Student grading & ranking system"
   },
-"Get Geolocation and Save to LocalStorage": {
-    "prefix": "geolocal",
-    "body": [
-      "navigator.geolocation.getCurrentPosition(position => {",
-      "  const latitude = position.coords.latitude;",
-      "  const longitude = position.coords.longitude;",
-      "",
-      "  console.log(latitude, longitude);",
-      "",
-      "  const user = {",
-      "    name: \"${1:saran}\",",
-      "    latitude_pos: latitude,",
-      "    longitude_pos: longitude",
-      "  };",
-      "",
-      "  const jsonData = JSON.stringify(user);",
-      "  localStorage.setItem(\"user\", jsonData);",
-      "",
-      "  const storedData = localStorage.getItem(\"user\");",
-      "  const parsedData = JSON.parse(storedData);",
-      "",
-      "  console.log(parsedData);",
-      "});"
-    ],
-    "description": "Get user geolocation and store it in localStorage"
-  },
 
   "Todo Manager": {
-    "prefix": "todolist",
+    "prefix": "todolist-",
     "body": [
       "let tasks = JSON.parse(localStorage.getItem(\"tasks\")) || [];",
       "",
@@ -119,7 +93,7 @@
   },
 
   "Theme Toggle": {
-    "prefix": "themetoggle",
+    "prefix": "themetoggle-",
     "body": [
       "const setTheme = (theme) => {",
       "  document.body.dataset.theme = theme;",
@@ -133,7 +107,7 @@
   },
 
   "Clock and Timer": {
-    "prefix": "clocktimer",
+    "prefix": "clocktimer-",
     "body": [
       "let timerInterval = null;",
       "",
@@ -162,7 +136,7 @@
   },
 
   "Api Fetch With Retry": {
-    "prefix": "apifetch",
+    "prefix": "apifetch-",
     "body": [
       "const API_URL = \"https://jsonplaceholder.typicode.com/posts/1\";",
       "",
@@ -184,7 +158,7 @@
   },
 
   "Image File Upload Preview": {
-    "prefix": "imagepreview",
+    "prefix": "imagepreview-",
     "body": [
       "const fileInput = document.getElementById(\"fileInput\");",
       "const preview = document.getElementById(\"preview\");",
@@ -272,6 +246,33 @@
       "console.log(sum);"
     ]
   },
+  "MCQ Quiz with Score Update": {
+    "prefix": "mcqscore",
+    "body": [
+      "let score = 0;",
+      "",
+      "const questions = [",
+      "  {",
+      "    question: \"${1:Question text here}\",",
+      "    options: [\"${2:Option A}\", \"${3:Option B}\", \"${4:Option C}\", \"${5:Option D}\"],",
+      "    correctAnswer: ${6:0}",
+      "  }",
+      "];",
+      "",
+      "function checkAnswer(selectedIndex, questionIndex) {",
+      "  if (questions[questionIndex].correctAnswer === selectedIndex) {",
+      "    score++;",
+      "    console.log(\"Correct! Score:\", score);",
+      "  } else {",
+      "    console.log(\"Wrong answer. Score:\", score);",
+      "  }",
+      "}",
+      "",
+      "// Example usage",
+      "// checkAnswer(0, 0);"
+    ],
+    "description": "MCQ based choose correct option and update score"
+  },
 
   "Reverse String": {
     "prefix": "js-reverse",
@@ -285,6 +286,32 @@
       "",
       "console.log(reversed);"
     ]
+  },
+  "Get Geolocation and Save to LocalStorage": {
+    "prefix": "geolocal",
+    "body": [
+      "navigator.geolocation.getCurrentPosition(position => {",
+      "  const latitude = position.coords.latitude;",
+      "  const longitude = position.coords.longitude;",
+      "",
+      "  console.log(latitude, longitude);",
+      "",
+      "  const user = {",
+      "    name: \"${1:saran}\",",
+      "    latitude_pos: latitude,",
+      "    longitude_pos: longitude",
+      "  };",
+      "",
+      "  const jsonData = JSON.stringify(user);",
+      "  localStorage.setItem(\"user\", jsonData);",
+      "",
+      "  const storedData = localStorage.getItem(\"user\");",
+      "  const parsedData = JSON.parse(storedData);",
+      "",
+      "  console.log(parsedData);",
+      "});"
+    ],
+    "description": "Get user geolocation and store it in localStorage"
   },
 
   "Count Vowels": {
