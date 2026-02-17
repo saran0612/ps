@@ -676,7 +676,252 @@
       "  navigator.clipboard.writeText(text.innerText);",
       "});"
     ]
+  },
+  "1. MCQ Quiz with Score": {
+    "prefix": "-quizScore",
+    "body": [
+      "let score = 0;",
+      "const quiz = [",
+      " { question: \"Q1\", options: [\"A\",\"B\",\"C\",\"D\"], answer: 1 }",
+      "];",
+      "",
+      "function selectAnswer(qIndex, optIndex) {",
+      " if (quiz[qIndex].answer === optIndex) score++;",
+      "}",
+      "",
+      "function showResult() {",
+      " console.log(`Final Score: ${score}`);",
+      "}"
+    ],
+    "description": "MCQ based quiz and score system"
+  },
+
+  "2. Shopping Cart": {
+    "prefix": "-shoppingCart",
+    "body": [
+      "let cart = [];",
+      "",
+      "function addItem(item, price) {",
+      " cart.push({ item, price });",
+      "}",
+      "",
+      "function totalAmount() {",
+      " return cart.reduce((sum, i) => sum + i.price, 0);",
+      "}"
+    ],
+    "description": "Shopping cart add & total logic"
+  },
+
+  "3. Todo App Logic": {
+    "prefix": "-todoLogic",
+    "body": [
+      "let todos = [];",
+      "",
+      "function addTodo(task) {",
+      " todos.push({ task, done: false });",
+      "}",
+      "",
+      "function toggleTodo(index) {",
+      " todos[index].done = !todos[index].done;",
+      "}"
+    ],
+    "description": "Todo add & toggle status"
+  },
+
+  "4. Login System": {
+    "prefix": "-loginSystem",
+    "body": [
+      "const user = { email: \"test@mail.com\", password: \"1234\" };",
+      "",
+      "function login(email, password) {",
+      " return email === user.email && password === user.password;",
+      "}"
+    ],
+    "description": "Simple login validation"
+  },
+
+  "5. Timer Quiz": {
+    "prefix": "-timerQuiz",
+    "body": [
+      "let time = 10;",
+      "",
+      "const timer = setInterval(() => {",
+      " time--;",
+      " if (time === 0) clearInterval(timer);",
+      "}, 1000);"
+    ],
+    "description": "Timer-based quiz logic"
+  },
+
+  "6. Pagination": {
+    "prefix": "-pagination",
+    "body": [
+      "function paginate(data, page, limit) {",
+      " const start = (page - 1) * limit;",
+      " return data.slice(start, start + limit);",
+      "}"
+    ],
+    "description": "Pagination logic"
+  },
+
+  "7. Form Validation": {
+    "prefix": "-formValidate",
+    "body": [
+      "function validateForm(email, password) {",
+      " return email.includes('@') && password.length >= 6;",
+      "}"
+    ],
+    "description": "Basic form validation"
+  },
+
+  "8. Product Search": {
+    "prefix": "-searchProduct",
+    "body": [
+      "function search(products, keyword) {",
+      " return products.filter(p => p.name.includes(keyword));",
+      "}"
+    ],
+    "description": "Search products by name"
+  },
+
+  "9. Voting System": {
+    "prefix": "-votingSystem",
+    "body": [
+      "let votes = {};",
+      "",
+      "function vote(option) {",
+      " votes[option] = (votes[option] || 0) + 1;",
+      "}"
+    ],
+    "description": "Voting system logic"
+  },
+
+  "10. Expense Tracker": {
+    "prefix": "-expenseTracker",
+    "body": [
+      "let expenses = [];",
+      "",
+      "function addExpense(title, amount) {",
+      " expenses.push({ title, amount });",
+      "}",
+      "",
+      "function totalExpense() {",
+      " return expenses.reduce((t,e)=>t+e.amount,0);",
+      "}"
+    ],
+    "description": "Expense tracker logic"
+  },
+
+  "11. Password Strength": {
+    "prefix": "-passwordStrength",
+    "body": [
+      "function strength(pwd) {",
+      " return pwd.length >= 8 ? 'Strong' : 'Weak';",
+      "}"
+    ],
+    "description": "Password strength checker"
+  },
+
+  "12. Notification System": {
+    "prefix": "-notifySystem",
+    "body": [
+      "function notify(msg) {",
+      " console.log(msg);",
+      " setTimeout(() => console.log('Removed'), 3000);",
+      "}"
+    ],
+    "description": "Notification auto dismiss"
+  },
+
+  "13. Star Rating": {
+    "prefix": "-starRating",
+    "body": [
+      "let rating = 0;",
+      "",
+      "function rate(star) {",
+      " rating = star;",
+      "}"
+    ],
+    "description": "Star rating logic"
+  },
+
+  "14. Quiz Review": {
+    "prefix": "-quizReview",
+    "body": [
+      "function review(questions) {",
+      " questions.forEach(q => console.log(q.question, q.answer));",
+      "}"
+    ],
+    "description": "Quiz review system"
+  },
+
+  "15. File Upload Validation": {
+    "prefix": "-fileValidate",
+    "body": [
+      "function validateFile(file) {",
+      " return file.size < 2000000;",
+      "}"
+    ],
+    "description": "File size validation"
+  },
+
+  "16. Leaderboard": {
+    "prefix": "-leaderBoard",
+    "body": [
+      "function leaderboard(players) {",
+      " return players.sort((a,b)=>b.score-a.score);",
+      "}"
+    ],
+    "description": "Leaderboard sorting"
+  },
+
+  "17. Multi Step Form": {
+    "prefix": "-multiStepForm",
+    "body": [
+      "let step = 1;",
+      "",
+      "function next() { step++; }",
+      "function prev() { step--; }"
+    ],
+    "description": "Multi-step form navigation"
+  },
+
+  "18. Poll System": {
+    "prefix": "-pollSystem",
+    "body": [
+      "let poll = {};",
+      "",
+      "function votePoll(opt) {",
+      " poll[opt] = (poll[opt] || 0) + 1;",
+      "}"
+    ],
+    "description": "Online poll logic"
+  },
+
+  "19. Theme Toggle": {
+    "prefix": "-themeToggle",
+    "body": [
+      "let theme = 'light';",
+      "",
+      "function toggleTheme() {",
+      " theme = theme === 'light' ? 'dark' : 'light';",
+      "}"
+    ],
+    "description": "Theme toggle logic"
+  },
+
+  "20. Negative Marking Quiz": {
+    "prefix": "-negativeQuiz",
+    "body": [
+      "let score = 0;",
+      "",
+      "function answer(correct) {",
+      " score += correct ? 1 : -0.25;",
+      "}"
+    ],
+    "description": "Quiz with negative marking"
   }
+
 }
 
 
