@@ -65,6 +65,32 @@
     ],
     "description": "Student grading & ranking system"
   },
+"Get Geolocation and Save to LocalStorage": {
+    "prefix": "geolocal",
+    "body": [
+      "navigator.geolocation.getCurrentPosition(position => {",
+      "  const latitude = position.coords.latitude;",
+      "  const longitude = position.coords.longitude;",
+      "",
+      "  console.log(latitude, longitude);",
+      "",
+      "  const user = {",
+      "    name: \"${1:saran}\",",
+      "    latitude_pos: latitude,",
+      "    longitude_pos: longitude",
+      "  };",
+      "",
+      "  const jsonData = JSON.stringify(user);",
+      "  localStorage.setItem(\"user\", jsonData);",
+      "",
+      "  const storedData = localStorage.getItem(\"user\");",
+      "  const parsedData = JSON.parse(storedData);",
+      "",
+      "  console.log(parsedData);",
+      "});"
+    ],
+    "description": "Get user geolocation and store it in localStorage"
+  },
 
   "Todo Manager": {
     "prefix": "todolist",
