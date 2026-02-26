@@ -1,927 +1,124 @@
 {
-  "Quick DOM Selectors": {
-    "prefix": "selectors-",
+  "Get User CSV File": {
+    "prefix": "csv-upload",
+    "description": "Upload and read CSV file",
     "body": [
-      "const $ = (selector) => document.querySelector(selector);",
-      "const $$ = (selector) => document.querySelectorAll(selector);",
-      "$0"
-    ],
-    "description": "Quick DOM selector helpers"
-  },
-
-  "Client Side Authentication": {
-    "prefix": "authentication-",
-    "body": [
-      "const users = [",
-      "  { id: 1, username: \"john\", password: \"1234\", role: \"student\", isLocked: false, failedAttempts: 0 },",
-      "  { id: 2, username: \"admin\", password: \"admin123\", role: \"admin\", isLocked: false, failedAttempts: 0 }",
-      "];",
+      "/*",
+      "<input type=\"file\" id=\"csvInput\" accept=\".csv\" />",
+      "<pre id=\"csvOutput\"></pre>",
+      "*/",
       "",
-      "const getStoredUser = () => JSON.parse(localStorage.getItem(\"sessionUser\"));",
-      "const saveSession = (user) => localStorage.setItem(\"sessionUser\", JSON.stringify(user));",
-      "const clearSession = () => localStorage.removeItem(\"sessionUser\");",
+      "const csvInput = document.getElementById(\"csvInput\");",
+      "const csvOutput = document.getElementById(\"csvOutput\");",
       "",
-      "const authenticate = (username, password) => {",
-      "  const user = users.find(u => u.username === username);",
-      "  if (!user) return \"INVALID_USER\";",
-      "  if (user.isLocked) return \"LOCKED\";",
+      "csvInput.addEventListener(\"change\", (e) => {",
+      "  const file = e.target.files[0];",
+      "  if (!file) return;",
       "",
-      "  if (user.password === password) {",
-      "    user.failedAttempts = 0;",
-      "    saveSession(user);",
-      "    return \"SUCCESS\";",
-      "  }",
+      "  const reader = new FileReader();",
       "",
-      "  user.failedAttempts++;",
-      "  if (user.failedAttempts >= 3) user.isLocked = true;",
-      "  return \"INVALID_PASSWORD\";",
-      "};",
-      "$0"
-    ],
-    "description": "Client-side authentication with session"
-  },
-
-  "Student Performance Analyzer": {
-    "prefix": "studentanalyzer-",
-    "body": [
-      "const students = [];",
-      "",
-      "const calculateGrade = (marks) => {",
-      "  if (marks.some(m => m < 40)) return \"Fail\";",
-      "  const avg = marks.reduce((a, b) => a + b, 0) / marks.length;",
-      "  if (avg >= 90) return \"O\";",
-      "  if (avg >= 80) return \"A+\";",
-      "  if (avg >= 70) return \"A\";",
-      "  if (avg >= 60) return \"B\";",
-      "  return \"C\";",
-      "};",
-      "",
-      "const addStudent = (name, marks) => {",
-      "  if (marks.some(m => m < 0 || m > 100)) return;",
-      "  const total = marks.reduce((a, b) => a + b, 0);",
-      "  students.push({ name, marks, total, grade: calculateGrade(marks) });",
-      "};",
-      "$0"
-    ],
-    "description": "Student grading & ranking system"
-  },
-
-  "Todo Manager": {
-    "prefix": "todolist-",
-    "body": [
-      "let tasks = JSON.parse(localStorage.getItem(\"tasks\")) || [];",
-      "",
-      "const saveTasks = () => localStorage.setItem(\"tasks\", JSON.stringify(tasks));",
-      "",
-      "const addTask = (title) => {",
-      "  tasks.push({ id: Date.now(), title, isCompleted: false, createdAt: new Date() });",
-      "  saveTasks();",
-      "};",
-      "",
-      "const toggleTask = (id) => {",
-      "  tasks = tasks.map(t => t.id === id ? { ...t, isCompleted: !t.isCompleted } : t);",
-      "  saveTasks();",
-      "};",
-      "",
-      "const deleteTask = (id) => {",
-      "  tasks = tasks.filter(t => t.id !== id);",
-      "  saveTasks();",
-      "};",
-      "$0"
-    ],
-    "description": "Todo manager with persistence"
-  },
-
-  "Theme Toggle": {
-    "prefix": "themetoggle-",
-    "body": [
-      "const setTheme = (theme) => {",
-      "  document.body.dataset.theme = theme;",
-      "  localStorage.setItem(\"theme\", theme);",
-      "};",
-      "",
-      "const loadTheme = () => setTheme(localStorage.getItem(\"theme\") || \"light\");",
-      "$0"
-    ],
-    "description": "Dark / Light theme toggle"
-  },
-
-  "Clock and Timer": {
-    "prefix": "clocktimer-",
-    "body": [
-      "let timerInterval = null;",
-      "",
-      "const startClock = () => {",
-      "  setInterval(() => {",
-      "    console.log(new Date().toLocaleTimeString());",
-      "  }, 1000);",
-      "};",
-      "",
-      "const startTimer = (seconds) => {",
-      "  if (timerInterval) return;",
-      "  timerInterval = setInterval(() => {",
-      "    if (seconds <= 0) {",
-      "      clearInterval(timerInterval);",
-      "      timerInterval = null;",
-      "      alert(\"Time's Up!\");",
-      "    } else {",
-      "      seconds--;",
-      "      console.log(new Date(seconds * 1000).toISOString().substr(11, 8));",
-      "    }",
-      "  }, 1000);",
-      "};",
-      "$0"
-    ],
-    "description": "Digital clock and countdown timer"
-  },
-
-  "Api Fetch With Retry": {
-    "prefix": "apifetch-",
-    "body": [
-      "const API_URL = \"https://jsonplaceholder.typicode.com/posts/1\";",
-      "",
-      "const fetchWithRetry = async (retryCount = 1) => {",
-      "  try {",
-      "    const response = await fetch(API_URL);",
-      "    if (!response.ok) throw new Error(\"API Error\");",
-      "    const data = await response.json();",
-      "    console.log(data);",
-      "    return data;",
-      "  } catch (err) {",
-      "    if (retryCount < 3) return fetchWithRetry(retryCount + 1);",
-      "    console.error(\"Failed to fetch\");",
-      "  }",
-      "};",
-      "$0"
-    ],
-    "description": "API fetch with retry logic"
-  },
-
-  "Image File Upload Preview": {
-    "prefix": "imagepreview-",
-    "body": [
-      "const fileInput = document.getElementById(\"fileInput\");",
-      "const preview = document.getElementById(\"preview\");",
-      "",
-      "fileInput.addEventListener(\"change\", function () {",
-      "  const file = this.files[0];",
-      "  if (file) {",
-      "    const reader = new FileReader();",
-      "    reader.onload = () => preview.src = reader.result;",
-      "    reader.readAsDataURL(file);",
-      "  }",
-      "});",
-      "$0"
-    ],
-    "description": "Image file upload preview"
-  },
-  "Hello World": {
-    "prefix": "js-hello",
-    "body": [
-      "console.log(\"Hello World\");"
-    ]
-  },
-
-  "Prompt and Greet": {
-    "prefix": "js-greet",
-    "body": [
-      "const name = prompt(\"Enter your name\");",
-      "alert(\"Hello \" + name);"
-    ]
-  },
-
-  "Even or Odd": {
-    "prefix": "js-evenodd",
-    "body": [
-      "const num = Number(prompt(\"Enter a number\"));",
-      "",
-      "if (num % 2 === 0) {",
-      "  console.log(\"Even\");",
-      "} else {",
-      "  console.log(\"Odd\");",
-      "}"
-    ]
-  },
-
-  "Largest of Two Numbers": {
-    "prefix": "js-largest",
-    "body": [
-      "const a = Number(prompt(\"Enter A\"));",
-      "const b = Number(prompt(\"Enter B\"));",
-      "",
-      "console.log(a > b ? a : b);"
-    ]
-  },
-
-  "Grade Calculator": {
-    "prefix": "js-grade",
-    "body": [
-      "const marks = Number(prompt(\"Enter marks\"));",
-      "",
-      "if (marks >= 90) console.log(\"A\");",
-      "else if (marks >= 75) console.log(\"B\");",
-      "else console.log(\"C\");"
-    ]
-  },
-
-  "Print Numbers 1 to 10": {
-    "prefix": "js-loop10",
-    "body": [
-      "for (let i = 1; i <= 10; i++) {",
-      "  console.log(i);",
-      "}"
-    ]
-  },
-
-  "Sum of Array": {
-    "prefix": "js-arrsum",
-    "body": [
-      "const arr = [10, 20, 30];",
-      "let sum = 0;",
-      "",
-      "for (const n of arr) {",
-      "  sum += n;",
-      "}",
-      "",
-      "console.log(sum);"
-    ]
-  },
-  "MCQ Quiz with Score Update": {
-    "prefix": "mcqscore",
-    "body": [
-      "let score = 0;",
-      "",
-      "const questions = [",
-      "  {",
-      "    question: \"${1:Question text here}\",",
-      "    options: [\"${2:Option A}\", \"${3:Option B}\", \"${4:Option C}\", \"${5:Option D}\"],",
-      "    correctAnswer: ${6:0}",
-      "  }",
-      "];",
-      "",
-      "function checkAnswer(selectedIndex, questionIndex) {",
-      "  if (questions[questionIndex].correctAnswer === selectedIndex) {",
-      "    score++;",
-      "    console.log(\"Correct! Score:\", score);",
-      "  } else {",
-      "    console.log(\"Wrong answer. Score:\", score);",
-      "  }",
-      "}",
-      "",
-      "// Example usage",
-      "// checkAnswer(0, 0);"
-    ],
-    "description": "MCQ based choose correct option and update score"
-  },
-
-  "Reverse String": {
-    "prefix": "js-reverse",
-    "body": [
-      "const str = \"hello\";",
-      "let reversed = \"\";",
-      "",
-      "for (let i = str.length - 1; i >= 0; i--) {",
-      "  reversed += str[i];",
-      "}",
-      "",
-      "console.log(reversed);"
-    ]
-  },
-  "Get Geolocation and Save to LocalStorage": {
-    "prefix": "geolocal",
-    "body": [
-      "navigator.geolocation.getCurrentPosition(position => {",
-      "  const latitude = position.coords.latitude;",
-      "  const longitude = position.coords.longitude;",
-      "",
-      "  console.log(latitude, longitude);",
-      "",
-      "  const user = {",
-      "    name: \"${1:saran}\",",
-      "    latitude_pos: latitude,",
-      "    longitude_pos: longitude",
+      "  reader.onload = (event) => {",
+      "    const text = event.target.result;",
+      "    const rows = text.split(\"\\n\").map(r => r.split(\",\"));",
+      "    csvOutput.textContent = JSON.stringify(rows, null, 2);",
       "  };",
       "",
-      "  const jsonData = JSON.stringify(user);",
-      "  localStorage.setItem(\"user\", jsonData);",
-      "",
-      "  const storedData = localStorage.getItem(\"user\");",
-      "  const parsedData = JSON.parse(storedData);",
-      "",
-      "  console.log(parsedData);",
+      "  reader.readAsText(file);",
       "});"
-    ],
-    "description": "Get user geolocation and store it in localStorage"
-  },
-
-  "Count Vowels": {
-    "prefix": "js-vowels",
-    "body": [
-      "const text = \"javascript\";",
-      "let count = 0;",
-      "",
-      "for (const ch of text) {",
-      "  if (\"aeiou\".includes(ch)) count++;",
-      "}",
-      "",
-      "console.log(count);"
-    ]
-  },
-
-  "Add Function": {
-    "prefix": "js-addfn",
-    "body": [
-      "function add(a, b) {",
-      "  return a + b;",
-      "}",
-      "",
-      "console.log(add(5, 3));"
-    ]
-  },
-
-  "Simple Object": {
-    "prefix": "js-object",
-    "body": [
-      "const user = {",
-      "  name: \"Saran\",",
-      "  age: 18",
-      "};",
-      "",
-      "console.log(user.name);"
-    ]
-  },
-
-  "Object Method": {
-    "prefix": "js-objmethod",
-    "body": [
-      "const user = {",
-      "  name: \"Saran\",",
-      "  greet() {",
-      "    console.log(\"Hello \" + this.name);",
-      "  }",
-      "};",
-      "",
-      "user.greet();"
-    ]
-  },
-
-  "DOM Text Change": {
-    "prefix": "js-domtext",
-    "body": [
-      "document.getElementById(\"title\").innerText = \"Changed!\";"
-    ]
-  },
-
-  "Button Click Counter": {
-    "prefix": "js-clickcount",
-    "body": [
-      "let count = 0;",
-      "",
-      "document.getElementById(\"btn\").addEventListener(\"click\", () => {",
-      "  count++;",
-      "  console.log(count);",
-      "});"
-    ]
-  },
-
-  "Form Validation": {
-    "prefix": "js-formvalidate",
-    "body": [
-      "form.addEventListener(\"submit\", e => {",
-      "  e.preventDefault();",
-      "",
-      "  if (input.value === \"\") {",
-      "    alert(\"Field required\");",
-      "  }",
-      "});"
-    ]
-  },
-
-  "Fetch API": {
-    "prefix": "js-fetch",
-    "body": [
-      "fetch(\"https://jsonplaceholder.typicode.com/users\")",
-      "  .then(res => res.json())",
-      "  .then(data => console.log(data))",
-      "  .catch(err => console.error(err));"
-    ]
-  },
-
-  "Async Await Fetch": {
-    "prefix": "js-asyncfetch",
-    "body": [
-      "async function load() {",
-      "  const res = await fetch(\"https://jsonplaceholder.typicode.com/posts\");",
-      "  const data = await res.json();",
-      "  console.log(data);",
-      "}",
-      "",
-      "load();"
-    ]
-  },
-
-  "Save to localStorage": {
-    "prefix": "js-localsave",
-    "body": [
-      "const user = { name: \"Saran\", age: 18 };",
-      "localStorage.setItem(\"user\", JSON.stringify(user));"
-    ]
-  },
-
-  "Get from localStorage": {
-    "prefix": "js-localget",
-    "body": [
-      "const data = JSON.parse(localStorage.getItem(\"user\"));",
-      "console.log(data.name);"
     ]
   },
 
   "Image Upload Preview": {
-    "prefix": "js-imgpreview",
+    "prefix": "image-preview",
+    "description": "Upload image and preview",
     "body": [
-      "input.addEventListener(\"change\", () => {",
-      "  const file = input.files[0];",
-      "  if (file) {",
-      "    img.src = URL.createObjectURL(file);",
-      "  }",
-      "});"
-    ]
-  },
-  "DOM Live Character Counter": {
-    "prefix": "dom-charcount",
-    "body": [
-      "const textarea = document.querySelector(\"#text\");",
-      "const counter = document.querySelector(\"#count\");",
+      "/*",
+      "<input type=\"file\" id=\"imageInput\" accept=\"image/*\" />",
+      "<img id=\"preview\" width=\"200\" />",
+      "*/",
       "",
-      "textarea.addEventListener(\"input\", () => {",
-      "  counter.innerText = textarea.value.length;",
-      "});"
-    ]
-  },
-
-  "DOM Dark Mode Toggle": {
-    "prefix": "dom-darkmode",
-    "body": [
-      "const btn = document.querySelector(\"#toggle\");",
+      "const imageInput = document.getElementById(\"imageInput\");",
+      "const preview = document.getElementById(\"preview\");",
       "",
-      "btn.addEventListener(\"click\", () => {",
-      "  document.body.classList.toggle(\"dark\");",
-      "});"
-    ]
-  },
-
-  "DOM Dynamic List Add Remove": {
-    "prefix": "dom-list",
-    "body": [
-      "const input = document.querySelector(\"#item\");",
-      "const list = document.querySelector(\"#list\");",
+      "imageInput.addEventListener(\"change\", (e) => {",
+      "  const file = e.target.files[0];",
+      "  if (!file) return;",
       "",
-      "function addItem() {",
-      "  const li = document.createElement(\"li\");",
-      "  li.innerText = input.value;",
+      "  const reader = new FileReader();",
+      "  reader.onload = (ev) => preview.src = ev.target.result;",
+      "  reader.readAsDataURL(file);",
+      "});"
+    ]
+  },
+
+  "MCQ Quiz with Score": {
+    "prefix": "mcq-quiz",
+    "description": "MCQ quiz and score system",
+    "body": [
+      "/*",
+      "<div id=\"quiz\"></div>",
+      "<button id=\"submitBtn\">Submit</button>",
+      "<p id=\"score\"></p>",
+      "*/",
       "",
-      "  li.addEventListener(\"click\", () => li.remove());",
-      "",
-      "  list.appendChild(li);",
-      "  input.value = \"\";",
-      "}"
-    ]
-  },
-
-  "DOM Search Filter": {
-    "prefix": "dom-search",
-    "body": [
-      "const search = document.querySelector(\"#search\");",
-      "const items = document.querySelectorAll(\"li\");",
-      "",
-      "search.addEventListener(\"keyup\", () => {",
-      "  items.forEach(item => {",
-      "    item.style.display =",
-      "      item.innerText.toLowerCase().includes(search.value.toLowerCase())",
-      "        ? \"block\"",
-      "        : \"none\";",
-      "  });",
-      "});"
-    ]
-  },
-
-  "DOM Form Validation": {
-    "prefix": "dom-form",
-    "body": [
-      "form.addEventListener(\"submit\", e => {",
-      "  e.preventDefault();",
-      "  if (email.value === \"\") {",
-      "    error.innerText = \"Email required\";",
-      "  }",
-      "});"
-    ]
-  },
-
-  "DOM Modal Toggle": {
-    "prefix": "dom-modal",
-    "body": [
-      "openBtn.onclick = () => modal.style.display = \"block\";",
-      "closeBtn.onclick = () => modal.style.display = \"none\";"
-    ]
-  },
-
-  "DOM Image Gallery": {
-    "prefix": "dom-gallery",
-    "body": [
-      "thumbnails.forEach(img => {",
-      "  img.addEventListener(\"click\", () => {",
-      "    mainImg.src = img.src;",
-      "  });",
-      "});"
-    ]
-  },
-
-  "DOM Accordion": {
-    "prefix": "dom-accordion",
-    "body": [
-      "headers.forEach(header => {",
-      "  header.addEventListener(\"click\", () => {",
-      "    header.nextElementSibling.classList.toggle(\"show\");",
-      "  });",
-      "});"
-    ]
-  },
-
-  "DOM Auto Counter": {
-    "prefix": "dom-autocounter",
-    "body": [
-      "let count = 0;",
-      "",
-      "setInterval(() => {",
-      "  count++;",
-      "  counter.innerText = count;",
-      "}, 1000);"
-    ]
-  },
-
-  "DOM Drag and Drop": {
-    "prefix": "dom-drag",
-    "body": [
-      "dragItem.addEventListener(\"dragstart\", e => {",
-      "  e.dataTransfer.setData(\"text\", e.target.id);",
-      "});",
-      "",
-      "dropZone.addEventListener(\"drop\", e => {",
-      "  const id = e.dataTransfer.getData(\"text\");",
-      "  dropZone.appendChild(document.getElementById(id));",
-      "});"
-    ]
-  },
-
-  "DOM Password Toggle": {
-    "prefix": "dom-password",
-    "body": [
-      "toggle.onclick = () => {",
-      "  password.type = password.type === \"password\" ? \"text\" : \"password\";",
-      "};"
-    ]
-  },
-
-  "DOM Scroll Progress": {
-    "prefix": "dom-scroll",
-    "body": [
-      "window.addEventListener(\"scroll\", () => {",
-      "  const scrollPercent =",
-      "    (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;",
-      "",
-      "  progress.style.width = scrollPercent + \"%\";",
-      "});"
-    ]
-  },
-
-  "DOM Todo Complete": {
-    "prefix": "dom-todo",
-    "body": [
-      "li.addEventListener(\"click\", () => {",
-      "  li.classList.toggle(\"completed\");",
-      "});"
-    ]
-  },
-
-  "DOM Add Table Row": {
-    "prefix": "dom-table",
-    "body": [
-      "function addRow() {",
-      "  const row = table.insertRow();",
-      "  row.insertCell(0).innerText = nameInput.value;",
-      "}"
-    ]
-  },
-
-  "DOM Tabs System": {
-    "prefix": "dom-tabs",
-    "body": [
-      "tabs.forEach(tab => {",
-      "  tab.addEventListener(\"click\", () => {",
-      "    contents.forEach(c => c.classList.remove(\"active\"));",
-      "    document.querySelector(tab.dataset.target).classList.add(\"active\");",
-      "  });",
-      "});"
-    ]
-  },
-
-  "DOM Character Limit Warning": {
-    "prefix": "dom-limit",
-    "body": [
-      "input.addEventListener(\"input\", () => {",
-      "  if (input.value.length > 10) {",
-      "    input.style.borderColor = \"red\";",
-      "  }",
-      "});"
-    ]
-  },
-
-  "DOM Real Time Clock": {
-    "prefix": "dom-clock",
-    "body": [
-      "setInterval(() => {",
-      "  const now = new Date();",
-      "  clock.innerText = now.toLocaleTimeString();",
-      "}, 1000);"
-    ]
-  },
-
-  "DOM Image Preview Upload": {
-    "prefix": "dom-preview",
-    "body": [
-      "fileInput.addEventListener(\"change\", () => {",
-      "  const file = fileInput.files[0];",
-      "  if (file) {",
-      "    preview.src = URL.createObjectURL(file);",
-      "  }",
-      "});"
-    ]
-  },
-
-  "DOM Event Delegation": {
-    "prefix": "dom-delegate",
-    "body": [
-      "list.addEventListener(\"click\", e => {",
-      "  if (e.target.tagName === \"LI\") {",
-      "    e.target.remove();",
-      "  }",
-      "});"
-    ]
-  },
-
-  "DOM Copy to Clipboard": {
-    "prefix": "dom-copy",
-    "body": [
-      "button.addEventListener(\"click\", () => {",
-      "  navigator.clipboard.writeText(text.innerText);",
-      "});"
-    ]
-  },
-  "1. MCQ Quiz with Score": {
-    "prefix": "-quizScore",
-    "body": [
-      "let score = 0;",
-      "const quiz = [",
-      " { question: \"Q1\", options: [\"A\",\"B\",\"C\",\"D\"], answer: 1 }",
+      "const questions = [",
+      "  { question: \"2 + 2?\", options: [\"3\", \"4\", \"5\"], answer: \"4\" },",
+      "  { question: \"Capital of France?\", options: [\"Paris\", \"Rome\", \"Berlin\"], answer: \"Paris\" }",
       "];",
       "",
-      "function selectAnswer(qIndex, optIndex) {",
-      " if (quiz[qIndex].answer === optIndex) score++;",
+      "const quiz = document.getElementById(\"quiz\");",
+      "const submitBtn = document.getElementById(\"submitBtn\");",
+      "const scoreEl = document.getElementById(\"score\");",
+      "",
+      "questions.forEach((q, i) => {",
+      "  const div = document.createElement(\"div\");",
+      "  div.innerHTML = `<p>${q.question}</p>` +",
+      "    q.options.map(o =>",
+      "      `<label><input type=\"radio\" name=\"q${i}\" value=\"${o}\" /> ${o}</label><br>`",
+      "    ).join(\"\");",
+      "  quiz.appendChild(div);",
+      "});",
+      "",
+      "submitBtn.addEventListener(\"click\", () => {",
+      "  let score = 0;",
+      "  questions.forEach((q, i) => {",
+      "    const ans = document.querySelector(`input[name=\"q${i}\"]:checked`);",
+      "    if (ans && ans.value === q.answer) score++;",
+      "  });",
+      "  scoreEl.textContent = `Score: ${score}/${questions.length}`;",
+      "});"
+    ]
+  },
+
+  "Fetch API with Retry": {
+    "prefix": "fetch-retry",
+    "description": "Fetch API with 3 retries",
+    "body": [
+      "/*",
+      "<button id=\"loadData\">Load</button>",
+      "<pre id=\"result\"></pre>",
+      "*/",
+      "",
+      "async function fetchWithRetry(url, retries = 3) {",
+      "  try {",
+      "    const res = await fetch(url);",
+      "    if (!res.ok) throw new Error(\"Failed\");",
+      "    return await res.json();",
+      "  } catch (err) {",
+      "    if (retries > 0) return fetchWithRetry(url, retries - 1);",
+      "    throw err;",
+      "  }",
       "}",
       "",
-      "function showResult() {",
-      " console.log(`Final Score: ${score}`);",
-      "}"
-    ],
-    "description": "MCQ based quiz and score system"
-  },
-
-  "2. Shopping Cart": {
-    "prefix": "-shoppingCart",
-    "body": [
-      "let cart = [];",
-      "",
-      "function addItem(item, price) {",
-      " cart.push({ item, price });",
-      "}",
-      "",
-      "function totalAmount() {",
-      " return cart.reduce((sum, i) => sum + i.price, 0);",
-      "}"
-    ],
-    "description": "Shopping cart add & total logic"
-  },
-
-  "3. Todo App Logic": {
-    "prefix": "-todoLogic",
-    "body": [
-      "let todos = [];",
-      "",
-      "function addTodo(task) {",
-      " todos.push({ task, done: false });",
-      "}",
-      "",
-      "function toggleTodo(index) {",
-      " todos[index].done = !todos[index].done;",
-      "}"
-    ],
-    "description": "Todo add & toggle status"
-  },
-
-  "4. Login System": {
-    "prefix": "-loginSystem",
-    "body": [
-      "const user = { email: \"test@mail.com\", password: \"1234\" };",
-      "",
-      "function login(email, password) {",
-      " return email === user.email && password === user.password;",
-      "}"
-    ],
-    "description": "Simple login validation"
-  },
-
-  "5. Timer Quiz": {
-    "prefix": "-timerQuiz",
-    "body": [
-      "let time = 10;",
-      "",
-      "const timer = setInterval(() => {",
-      " time--;",
-      " if (time === 0) clearInterval(timer);",
-      "}, 1000);"
-    ],
-    "description": "Timer-based quiz logic"
-  },
-
-  "6. Pagination": {
-    "prefix": "-pagination",
-    "body": [
-      "function paginate(data, page, limit) {",
-      " const start = (page - 1) * limit;",
-      " return data.slice(start, start + limit);",
-      "}"
-    ],
-    "description": "Pagination logic"
-  },
-
-  "7. Form Validation": {
-    "prefix": "-formValidate",
-    "body": [
-      "function validateForm(email, password) {",
-      " return email.includes('@') && password.length >= 6;",
-      "}"
-    ],
-    "description": "Basic form validation"
-  },
-
-  "8. Product Search": {
-    "prefix": "-searchProduct",
-    "body": [
-      "function search(products, keyword) {",
-      " return products.filter(p => p.name.includes(keyword));",
-      "}"
-    ],
-    "description": "Search products by name"
-  },
-
-  "9. Voting System": {
-    "prefix": "-votingSystem",
-    "body": [
-      "let votes = {};",
-      "",
-      "function vote(option) {",
-      " votes[option] = (votes[option] || 0) + 1;",
-      "}"
-    ],
-    "description": "Voting system logic"
-  },
-
-  "10. Expense Tracker": {
-    "prefix": "-expenseTracker",
-    "body": [
-      "let expenses = [];",
-      "",
-      "function addExpense(title, amount) {",
-      " expenses.push({ title, amount });",
-      "}",
-      "",
-      "function totalExpense() {",
-      " return expenses.reduce((t,e)=>t+e.amount,0);",
-      "}"
-    ],
-    "description": "Expense tracker logic"
-  },
-
-  "11. Password Strength": {
-    "prefix": "-passwordStrength",
-    "body": [
-      "function strength(pwd) {",
-      " return pwd.length >= 8 ? 'Strong' : 'Weak';",
-      "}"
-    ],
-    "description": "Password strength checker"
-  },
-
-  "12. Notification System": {
-    "prefix": "-notifySystem",
-    "body": [
-      "function notify(msg) {",
-      " console.log(msg);",
-      " setTimeout(() => console.log('Removed'), 3000);",
-      "}"
-    ],
-    "description": "Notification auto dismiss"
-  },
-
-  "13. Star Rating": {
-    "prefix": "-starRating",
-    "body": [
-      "let rating = 0;",
-      "",
-      "function rate(star) {",
-      " rating = star;",
-      "}"
-    ],
-    "description": "Star rating logic"
-  },
-
-  "14. Quiz Review": {
-    "prefix": "-quizReview",
-    "body": [
-      "function review(questions) {",
-      " questions.forEach(q => console.log(q.question, q.answer));",
-      "}"
-    ],
-    "description": "Quiz review system"
-  },
-
-  "15. File Upload Validation": {
-    "prefix": "-fileValidate",
-    "body": [
-      "function validateFile(file) {",
-      " return file.size < 2000000;",
-      "}"
-    ],
-    "description": "File size validation"
-  },
-
-  "16. Leaderboard": {
-    "prefix": "-leaderBoard",
-    "body": [
-      "function leaderboard(players) {",
-      " return players.sort((a,b)=>b.score-a.score);",
-      "}"
-    ],
-    "description": "Leaderboard sorting"
-  },
-
-  "17. Multi Step Form": {
-    "prefix": "-multiStepForm",
-    "body": [
-      "let step = 1;",
-      "",
-      "function next() { step++; }",
-      "function prev() { step--; }"
-    ],
-    "description": "Multi-step form navigation"
-  },
-
-  "18. Poll System": {
-    "prefix": "-pollSystem",
-    "body": [
-      "let poll = {};",
-      "",
-      "function votePoll(opt) {",
-      " poll[opt] = (poll[opt] || 0) + 1;",
-      "}"
-    ],
-    "description": "Online poll logic"
-  },
-
-  "19. Theme Toggle": {
-    "prefix": "-themeToggle",
-    "body": [
-      "let theme = 'light';",
-      "",
-      "function toggleTheme() {",
-      " theme = theme === 'light' ? 'dark' : 'light';",
-      "}"
-    ],
-    "description": "Theme toggle logic"
-  },
-
-  "20. Negative Marking Quiz": {
-    "prefix": "-negativeQuiz",
-    "body": [
-      "let score = 0;",
-      "",
-      "function answer(correct) {",
-      " score += correct ? 1 : -0.25;",
-      "}"
-    ],
-    "description": "Quiz with negative marking"
+      "document.getElementById(\"loadData\").addEventListener(\"click\", async () => {",
+      "  const result = document.getElementById(\"result\");",
+      "  try {",
+      "    const data = await fetchWithRetry(\"https://jsonplaceholder.typicode.com/posts/1\");",
+      "    result.textContent = JSON.stringify(data, null, 2);",
+      "  } catch {",
+      "    result.textContent = \"Failed after 3 attempts\";",
+      "  }",
+      "});"
+    ]
   }
-
 }
-
-
